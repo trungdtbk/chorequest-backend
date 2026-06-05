@@ -15,3 +15,39 @@ dependencies = [
     "sqlalchemy[asyncio]==2.0.36",
     "uvicorn[standard]==0.34.0",
 ]
+
+[dependency-groups]
+dev = [
+    "pylint>=4.0.5",
+    "pytest>=9.0.3",
+    "pytest-cov>=7.1.0",
+]
+
+[tool.pytest.ini_options]
+minversion = "7.0"
+# Automatically run coverage on your source directory (assuming your code is in a directory named "app")
+addopts = "-ra -q --cov=app --cov-report=term-missing"
+testpaths = [
+    "tests",
+]
+
+[tool.coverage.run]
+omit = [
+    "tests/*",
+    "**/__init__.py",
+]
+
+[tool.pylint.messages_control]
+# Disable rules that clash with modern Python/FastAPI conventions if desired
+disable = [
+    "missing-module-docstring",
+    "missing-function-docstring",
+    "no-name-in-module", # Fixes false positives on Pydantic/FastAPI imports
+]
+
+[tool.pylint.format]
+max-line-length = "88" # Matches standard black/ruff formatting
+
+[tool.pylint.main]
+# Tells pylint to look at the current root directory to resolve local imports
+source-roots = ["."]
