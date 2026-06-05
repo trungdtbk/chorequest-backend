@@ -12,3 +12,4 @@ eggs/
 *.db
 *.sqlite
 *.sqlite3
+.coverage
