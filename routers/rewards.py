@@ -357,6 +357,7 @@ async def redeem_reward(
     * Validates sufficient balance and stock.
     * Deducts points and creates a negative PointTransaction.
     * Redemption is auto-approved — parents fulfil rewards from the
+    * Reward with auto_fulfill=True are immediately marked as fulfilled
       Inventory page once they've been handed out in the real world.
     * Checks achievements and sends a WebSocket notification.
     """
@@ -394,12 +395,17 @@ async def redeem_reward(
     db.add(tx)
 
     # Always auto-approve — parents fulfil from Inventory when given out
+    if reward.auto_fulfill:
+        fulfilled_at = datetime.now(timezone.utc)
+    else:
+        fulfilled_at = None
     redemption = RewardRedemption(
         reward_id=reward.id,
         user_id=current_user.id,
         points_spent=reward.point_cost,
         status=RedemptionStatus.approved,
         approved_at=datetime.now(timezone.utc),
+        fulfilled_at=fulfilled_at,
     )
 
     db.add(redemption)
@@ -418,35 +424,36 @@ async def redeem_reward(
     redemption = result.scalar_one()
 
     # Notify parents that a kid redeemed a reward
-    parent_result = await db.execute(
-        select(User.id).where(
-            User.role.in_([UserRole.parent, UserRole.admin]),
-            User.is_active == True,
+    if not reward.auto_fulfill:
+        parent_result = await db.execute(
+            select(User.id).where(
+                User.role.in_([UserRole.parent, UserRole.admin]),
+                User.is_active == True,
+            )
         )
-    )
-    for (pid,) in parent_result.all():
-        db.add(Notification(
-            user_id=pid,
-            type=NotificationType.reward_approved,
-            title="Reward Redeemed!",
-            message=f"{current_user.display_name} redeemed '{reward.title}' for {reward.point_cost} XP",
-            reference_type="redemption",
-            reference_id=redemption.id,
-        ))
-    await db.commit()
+        for (pid,) in parent_result.all():
+            db.add(Notification(
+                user_id=pid,
+                type=NotificationType.reward_approved,
+                title="Reward Redeemed!",
+                message=f"{current_user.display_name} redeemed '{reward.title}' for {reward.point_cost} XP",
+                reference_type="redemption",
+                reference_id=redemption.id,
+            ))
+        await db.commit()
 
-    # Check achievements after redemption
-    await check_achievements(db, current_user)
+        # Check achievements after redemption
+        await check_achievements(db, current_user)
 
-    # WebSocket notification
-    await ws_manager.send_to_user(current_user.id, {
-        "type": "reward_redeemed",
-        "data": {
-            "redemption_id": redemption.id,
-            "reward_title": reward.title,
-            "points_spent": reward.point_cost,
-            "status": "approved",
-        },
-    })
+        # WebSocket notification
+        await ws_manager.send_to_user(current_user.id, {
+            "type": "reward_redeemed",
+            "data": {
+                "redemption_id": redemption.id,
+                "reward_title": reward.title,
+                "points_spent": reward.point_cost,
+                "status": "approved",
+            },
+        })
 
     return redemption
