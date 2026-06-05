@@ -151,6 +151,7 @@ async def convert_to_reward(
         point_cost=body.point_cost,
         icon=None,
         stock=1,
+        auto_fulfill=False,
         is_active=True,
         created_by=parent.id,
     )
