@@ -138,6 +138,44 @@ AVATAR_COLORS = {
     ],
 }
 
+PET_INITIAL_POWER = {
+    "cat": {
+        "hp": 10,
+        "attack": 2,
+        "defense": 1,
+        "speed": 3,
+    },
+    "dog": {
+        "hp": 12,
+        "attack": 3,
+        "defense": 2,
+        "speed": 2,
+    },
+    "dragon": {
+        "hp": 20,
+        "attack": 5,
+        "defense": 4,
+        "speed": 4,
+    },
+    "owl": {
+        "hp": 8,
+        "attack": 1,
+        "defense": 1,
+        "speed": 5,
+    },
+    "bunny": {
+        "hp": 9,
+        "attack": 2,
+        "defense": 1,
+        "speed": 4,
+    },
+    "phoenix": {
+        "hp": 15,
+        "attack": 4,
+        "defense": 3,
+        "speed": 4,
+    },
+}
 
 class AvatarConfig(BaseModel):
     config: dict
@@ -175,6 +213,10 @@ async def save_avatar(
     elif pet and pet != "none" and "pet_xp" in existing:
         # Switching to a pet that has no map entry yet — legacy migration
         new_config["pet_xp"] = xp_map.get(pet, 0)
+
+    # Keep record of pet powers. If it doesn't exist yet, initialize with PET_INITIAL_POWER.
+    if 'pet_powers' not in existing:
+        new_config['pet_powers'] = PET_INITIAL_POWER.copy()
 
     user.avatar_config = new_config
     user.updated_at = datetime.now()
