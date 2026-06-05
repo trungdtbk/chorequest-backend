@@ -5,8 +5,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from backend.database import get_db
-from backend.models import (
+from database import get_db
+from models import (
     Reward,
     RewardRedemption,
     RedemptionStatus,
@@ -17,15 +17,15 @@ from backend.models import (
     Notification,
     NotificationType,
 )
-from backend.schemas import (
+from schemas import (
     RewardCreate,
     RewardUpdate,
     RewardResponse,
     RedemptionResponse,
 )
-from backend.dependencies import get_current_user, require_parent
-from backend.achievements import check_achievements
-from backend.websocket_manager import ws_manager
+from dependencies import get_current_user, require_parent
+from achievements import check_achievements
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/rewards", tags=["rewards"])
 

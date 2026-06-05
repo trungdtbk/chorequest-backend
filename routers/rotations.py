@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import ChoreRotation
-from backend.schemas import RotationCreate, RotationUpdate, RotationResponse
-from backend.dependencies import require_parent
-from backend.websocket_manager import ws_manager
+from database import get_db
+from models import ChoreRotation
+from schemas import RotationCreate, RotationUpdate, RotationResponse
+from dependencies import require_parent
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/rotations", tags=["rotations"])
 

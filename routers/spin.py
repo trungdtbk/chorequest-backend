@@ -5,8 +5,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import (
+from database import get_db
+from models import (
     SpinResult,
     ChoreAssignment,
     AssignmentStatus,
@@ -14,11 +14,11 @@ from backend.models import (
     PointTransaction,
     PointType,
 )
-from backend.schemas import SpinResultResponse, SpinAvailabilityResponse
-from backend.dependencies import get_current_user
-from backend.achievements import check_achievements
-from backend.websocket_manager import ws_manager
-from backend.services.pet_leveling import award_pet_xp_db
+from schemas import SpinResultResponse, SpinAvailabilityResponse
+from dependencies import get_current_user
+from achievements import check_achievements
+from websocket_manager import ws_manager
+from services.pet_leveling import award_pet_xp_db
 
 router = APIRouter(prefix="/api/spin", tags=["spin"])
 

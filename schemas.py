@@ -1,6 +1,6 @@
 from datetime import datetime, date
 from pydantic import BaseModel, Field
-from backend.models import UserRole, Difficulty, Recurrence, AssignmentStatus, RedemptionStatus, PointType, NotificationType, RotationCadence
+from models import UserRole, Difficulty, Recurrence, AssignmentStatus, RedemptionStatus, PointType, NotificationType, RotationCadence
 
 
 # Auth

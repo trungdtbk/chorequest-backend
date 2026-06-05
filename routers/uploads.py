@@ -3,10 +3,10 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 from fastapi.responses import FileResponse
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.database import get_db
-from backend.config import settings
-from backend.dependencies import get_current_user, require_parent
-from backend.models import User
+from database import get_db
+from config import settings
+from dependencies import get_current_user, require_parent
+from models import User
 
 router = APIRouter(prefix="/api/uploads", tags=["uploads"])
 

@@ -6,12 +6,12 @@ from fastapi import APIRouter, Depends
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import (
+from database import get_db
+from models import (
     User, UserRole, ChoreAssignment, AssignmentStatus,
     PointTransaction,
 )
-from backend.dependencies import get_current_user
+from dependencies import get_current_user
 
 router = APIRouter(prefix="/api/progress", tags=["progress"])
 

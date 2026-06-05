@@ -7,7 +7,7 @@ from datetime import datetime, timedelta, timezone
 
 import bcrypt
 
-from backend.config import settings
+from config import settings
 
 
 def _b64url_encode(data: bytes) -> str:

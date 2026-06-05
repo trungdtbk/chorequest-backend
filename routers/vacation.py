@@ -4,10 +4,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import User, VacationPeriod
-from backend.schemas import VacationCreate, VacationResponse
-from backend.dependencies import require_parent
+from database import get_db
+from models import User, VacationPeriod
+from schemas import VacationCreate, VacationResponse
+from dependencies import require_parent
 
 router = APIRouter(prefix="/api/vacation", tags=["vacation"])
 

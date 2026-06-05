@@ -1,11 +1,11 @@
 from datetime import datetime, date, timezone
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.models import (
+from models import (
     Achievement, UserAchievement, User, ChoreAssignment, AssignmentStatus,
     PointTransaction, PointType, RewardRedemption, Notification, NotificationType,
 )
-from backend.websocket_manager import ws_manager
+from websocket_manager import ws_manager
 
 
 async def check_achievements(db: AsyncSession, user: User):
@@ -116,7 +116,7 @@ async def _check_criteria(db: AsyncSession, user: User, criteria: dict) -> bool:
         pet = config.get("pet")
         if not pet or pet == "none":
             return False
-        from backend.services.pet_leveling import get_current_pet_xp, get_pet_level
+        from services.pet_leveling import get_current_pet_xp, get_pet_level
         pet_xp = get_current_pet_xp(config)
         level = get_pet_level(pet_xp)["level"]
         return level >= criteria["level"]
@@ -142,7 +142,7 @@ async def _unlock_achievement(db: AsyncSession, user: User, achievement: Achieve
         db.add(tx)
 
         # Award pet XP alongside user XP
-        from backend.services.pet_leveling import award_pet_xp_db
+        from services.pet_leveling import award_pet_xp_db
         await award_pet_xp_db(db, user, achievement.points_reward)
 
     # Create notification

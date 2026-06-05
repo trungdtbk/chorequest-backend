@@ -5,11 +5,11 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.config import settings
-from backend.database import get_db
-from backend.models import User, UserRole, RefreshToken, InviteCode, AuditLog
-from backend.seed import seed_database
-from backend.schemas import (
+from config import settings
+from database import get_db
+from models import User, UserRole, RefreshToken, InviteCode, AuditLog
+from seed import seed_database
+from schemas import (
     RegisterRequest,
     LoginRequest,
     PinLoginRequest,
@@ -19,7 +19,7 @@ from backend.schemas import (
     UserResponse,
     AuthResponse,
 )
-from backend.auth import (
+from auth import (
     hash_password,
     verify_password,
     hash_pin,
@@ -29,9 +29,9 @@ from backend.auth import (
     decode_refresh_token,
     hash_token,
 )
-from backend.dependencies import get_current_user
-from backend.rate_limit import rate_limiter
-from backend.websocket_manager import ws_manager
+from dependencies import get_current_user
+from rate_limit import rate_limiter
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 

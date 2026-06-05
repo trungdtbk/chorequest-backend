@@ -10,7 +10,7 @@ from datetime import date, datetime, timedelta, timezone
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.models import (
+from models import (
     Chore,
     ChoreAssignment,
     ChoreAssignmentRule,
@@ -19,8 +19,8 @@ from backend.models import (
     AssignmentStatus,
     Recurrence,
 )
-from backend.services.recurrence import should_create_on_day
-from backend.services.rotation import (
+from services.recurrence import should_create_on_day
+from services.rotation import (
     get_rotation_kid_for_day,
     should_advance_rotation,
     advance_rotation,
@@ -44,7 +44,7 @@ async def auto_generate_week_assignments(
     week_dates = [week_start + timedelta(days=i) for i in range(7)]
 
     # Filter out vacation days from week generation
-    from backend.routers.vacation import is_vacation_day
+    from routers.vacation import is_vacation_day
     active_dates = []
     for d in week_dates:
         if not await is_vacation_day(db, d):
@@ -79,7 +79,7 @@ async def generate_daily_assignments(db: AsyncSession, today: date) -> None:
     weekends for a Mon-Fri custom schedule) don't waste rotation slots.
     """
     # Check vacation mode — skip generation if today is a vacation day
-    from backend.routers.vacation import is_vacation_day
+    from routers.vacation import is_vacation_day
     if await is_vacation_day(db, today):
         logger.info("Skipping assignment generation — vacation day %s", today)
         return

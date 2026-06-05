@@ -8,8 +8,8 @@ from sqlalchemy import select, and_, func, delete, text
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from backend.database import get_db
-from backend.models import (
+from database import get_db
+from models import (
     Chore,
     ChoreAssignment,
     ChoreAssignmentRule,
@@ -27,7 +27,7 @@ from backend.models import (
     NotificationType,
     Recurrence,
 )
-from backend.schemas import (
+from schemas import (
     ChoreCreate,
     ChoreUpdate,
     ChoreResponse,
@@ -41,12 +41,12 @@ from backend.schemas import (
     RotationResponse,
     QuestFeedbackRequest,
 )
-from backend.config import settings
-from backend.dependencies import get_current_user, require_parent
-from backend.achievements import check_achievements
-from backend.websocket_manager import ws_manager
-from backend.services.recurrence import should_create_on_day
-from backend.services.rotation import get_rotation_kid_for_day
+from config import settings
+from dependencies import get_current_user, require_parent
+from achievements import check_achievements
+from websocket_manager import ws_manager
+from services.recurrence import should_create_on_day
+from services.rotation import get_rotation_kid_for_day
 
 logger = logging.getLogger(__name__)
 
@@ -1024,7 +1024,7 @@ async def verify_chore(
     kid.total_points_earned += total_awarded
 
     # Pet XP — award the same amount as quest XP (per-pet tracking)
-    from backend.services.pet_leveling import award_pet_xp_db
+    from services.pet_leveling import award_pet_xp_db
     pet_levelup = await award_pet_xp_db(db, kid, total_awarded)
     if pet_levelup:
         db.add(Notification(
@@ -1044,7 +1044,7 @@ async def verify_chore(
             kid.last_streak_date = today
         elif gap > 1:
             # Check if all gap days were vacation days (streak shouldn't break)
-            from backend.routers.vacation import is_vacation_day
+            from routers.vacation import is_vacation_day
             all_vacation = True
             for offset in range(1, gap):
                 gap_day = kid.last_streak_date + timedelta(days=offset)
@@ -1116,7 +1116,7 @@ async def verify_chore(
     await db.commit()
 
     # Roll for quest drop avatar item
-    from backend.routers.avatar import try_quest_drop
+    from routers.avatar import try_quest_drop
     drop = await try_quest_drop(db, kid, chore.difficulty.value)
     if drop:
         await db.commit()
@@ -1193,7 +1193,7 @@ async def uncomplete_chore(
     if total_deducted > 0:
         config = assigned_user.avatar_config or {}
         if config.get("pet") and config["pet"] != "none":
-            from backend.services.pet_leveling import (
+            from services.pet_leveling import (
                 get_current_pet_xp, set_current_pet_xp, migrate_pet_xp,
             )
             import json as _json

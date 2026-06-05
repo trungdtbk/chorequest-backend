@@ -3,11 +3,11 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from backend.database import get_db
-from backend.models import Announcement, User, UserRole, Notification, NotificationType
-from backend.schemas import AnnouncementCreate, AnnouncementResponse
-from backend.dependencies import get_current_user, require_parent
-from backend.websocket_manager import ws_manager
+from database import get_db
+from models import Announcement, User, UserRole, Notification, NotificationType
+from schemas import AnnouncementCreate, AnnouncementResponse
+from dependencies import get_current_user, require_parent
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/announcements", tags=["announcements"])
 

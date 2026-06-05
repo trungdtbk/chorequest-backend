@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import SeasonalEvent, User, UserRole, Notification, NotificationType
-from backend.schemas import EventCreate, EventUpdate, EventResponse
-from backend.dependencies import get_current_user, require_parent
-from backend.websocket_manager import ws_manager
+from database import get_db
+from models import SeasonalEvent, User, UserRole, Notification, NotificationType
+from schemas import EventCreate, EventUpdate, EventResponse
+from dependencies import get_current_user, require_parent
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/events", tags=["events"])
 

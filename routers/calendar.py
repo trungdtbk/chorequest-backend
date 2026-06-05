@@ -5,8 +5,8 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from backend.database import get_db
-from backend.models import (
+from database import get_db
+from models import (
     Chore,
     ChoreAssignment,
     ChoreAssignmentRule,
@@ -18,10 +18,10 @@ from backend.models import (
     NotificationType,
     Recurrence,
 )
-from backend.schemas import TradeRequest
-from backend.dependencies import get_current_user, require_parent
-from backend.websocket_manager import ws_manager
-from backend.services.assignment_generator import auto_generate_week_assignments
+from schemas import TradeRequest
+from dependencies import get_current_user, require_parent
+from websocket_manager import ws_manager
+from services.assignment_generator import auto_generate_week_assignments
 
 router = APIRouter(prefix="/api/calendar", tags=["calendar"])
 

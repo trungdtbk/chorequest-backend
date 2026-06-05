@@ -8,9 +8,9 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import User, ApiKey, InviteCode, AuditLog, AppSetting
-from backend.schemas import (
+from database import get_db
+from models import User, ApiKey, InviteCode, AuditLog, AppSetting
+from schemas import (
     UserResponse,
     AdminUserUpdate,
     AdminResetPasswordRequest,
@@ -21,8 +21,8 @@ from backend.schemas import (
     AuditLogResponse,
     SettingsUpdate,
 )
-from backend.auth import hash_password
-from backend.dependencies import require_admin, require_parent, get_current_user
+from auth import hash_password
+from dependencies import require_admin, require_parent, get_current_user
 
 router = APIRouter(prefix="/api/admin", tags=["admin"])
 

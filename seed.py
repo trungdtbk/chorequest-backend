@@ -2,7 +2,7 @@ import json
 from datetime import date
 from sqlalchemy import select, func, and_
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.models import (
+from models import (
     ChoreCategory, Achievement, AppSetting, Chore, ChoreAssignment,
     ChoreAssignmentRule, QuestTemplate, User, UserRole, Difficulty, Recurrence,
     AssignmentStatus, AvatarItem, AvatarItemRarity, AvatarUnlockMethod,

@@ -4,11 +4,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import User, Shoutout, Notification, NotificationType
-from backend.schemas import ShoutoutCreate, ShoutoutResponse
-from backend.dependencies import get_current_user
-from backend.websocket_manager import ws_manager
+from database import get_db
+from models import User, Shoutout, Notification, NotificationType
+from schemas import ShoutoutCreate, ShoutoutResponse
+from dependencies import get_current_user
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/shoutouts", tags=["shoutouts"])
 

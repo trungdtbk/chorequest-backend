@@ -2,7 +2,7 @@
 
 from datetime import date, datetime, timedelta, timezone
 
-from backend.models import ChoreRotation, RotationCadence
+from models import ChoreRotation, RotationCadence
 
 
 def should_advance_rotation(rotation: ChoreRotation, now: datetime) -> bool:

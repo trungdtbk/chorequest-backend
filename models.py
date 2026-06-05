@@ -5,7 +5,7 @@ from sqlalchemy import (
     ForeignKey, UniqueConstraint,
 )
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from backend.database import Base
+from database import Base
 
 
 class UserRole(str, enum.Enum):

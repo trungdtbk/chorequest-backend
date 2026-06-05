@@ -3,9 +3,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, Field
 
-from backend.models import User
-from backend.dependencies import get_current_user
-from backend.websocket_manager import ws_manager
+from models import User
+from dependencies import get_current_user
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/emotes", tags=["emotes"])
 

@@ -10,9 +10,9 @@ import logging
 from sqlalchemy import event
 from sqlalchemy.orm import Session
 
-from backend.models import Notification
-from backend.database import async_session
-from backend.services.push import send_push_to_user
+from models import Notification
+from database import async_session
+from services.push import send_push_to_user
 
 logger = logging.getLogger(__name__)
 

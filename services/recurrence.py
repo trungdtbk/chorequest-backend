@@ -2,7 +2,7 @@
 
 from datetime import date
 
-from backend.models import Recurrence
+from models import Recurrence
 
 
 def should_create_on_day(

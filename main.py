@@ -11,14 +11,14 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy import delete, select
 
-from backend.config import settings
-from backend.database import init_db, async_session
-from backend.seed import seed_database
-from backend.auth import decode_access_token
-from backend.websocket_manager import ws_manager
-from backend.models import RefreshToken, User, UserRole
-from backend.services.assignment_generator import generate_daily_assignments
-from backend.services.push_hook import install_push_hooks
+from config import settings
+from database import init_db, async_session
+from seed import seed_database
+from auth import decode_access_token
+from websocket_manager import ws_manager
+from models import RefreshToken, User, UserRole
+from services.assignment_generator import generate_daily_assignments
+from services.push_hook import install_push_hooks
 
 logger = logging.getLogger(__name__)
 
@@ -32,7 +32,7 @@ async def reset_stale_streaks(db, today: date):
     streak is preserved.  Streak freezes are NOT consumed here because
     they are consumed at completion-time (see chores.py verify logic).
     """
-    from backend.routers.vacation import is_vacation_day
+    from routers.vacation import is_vacation_day
 
     yesterday = today - timedelta(days=1)
     result = await db.execute(
@@ -161,7 +161,7 @@ async def security_headers(request: Request, call_next):
 
 
 # Import and register routers
-from backend.routers import (  # noqa: E402
+from routers import (  # noqa: E402
     auth, chores, rewards, points, stats, calendar,
     notifications, admin, avatar, wishlist, events, spin, rotations, uploads, push,
     shoutouts, vacation, progress, emotes, announcements, pets,

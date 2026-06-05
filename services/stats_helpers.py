@@ -5,7 +5,7 @@ from datetime import date
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.models import ChoreAssignment, AssignmentStatus
+from models import ChoreAssignment, AssignmentStatus
 
 
 async def count_assignments(

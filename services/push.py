@@ -11,8 +11,8 @@ from urllib.parse import urlparse
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.config import settings
-from backend.models import PushSubscription, AppSetting
+from config import settings
+from models import PushSubscription, AppSetting
 
 logger = logging.getLogger(__name__)
 

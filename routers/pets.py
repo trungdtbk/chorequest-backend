@@ -6,11 +6,11 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import User
-from backend.schemas import PetInteractionRequest
-from backend.dependencies import get_current_user
-from backend.services.pet_leveling import (
+from database import get_db
+from models import User
+from schemas import PetInteractionRequest
+from dependencies import get_current_user
+from services.pet_leveling import (
     get_current_pet_xp,
     get_pet_level,
     migrate_pet_xp,

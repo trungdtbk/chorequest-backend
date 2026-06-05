@@ -4,8 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.models import (
+from database import get_db
+from models import (
     User,
     UserRole,
     PointTransaction,
@@ -14,16 +14,16 @@ from backend.models import (
     Notification,
     NotificationType,
 )
-from backend.services.pet_leveling import award_pet_xp_db
-from backend.schemas import (
+from services.pet_leveling import award_pet_xp_db
+from schemas import (
     BonusRequest,
     AdjustRequest,
     PointTransactionResponse,
     UserResponse,
 )
-from backend.dependencies import get_current_user, require_parent, require_admin
-from backend.achievements import check_achievements
-from backend.websocket_manager import ws_manager
+from dependencies import get_current_user, require_parent, require_admin
+from achievements import check_achievements
+from websocket_manager import ws_manager
 
 router = APIRouter(prefix="/api/points", tags=["points"])
 

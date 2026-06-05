@@ -6,8 +6,8 @@ from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from backend.database import get_db
-from backend.models import (
+from database import get_db
+from models import (
     User,
     UserRole,
     Chore,
@@ -20,12 +20,12 @@ from backend.models import (
     Notification,
     NotificationType,
 )
-from backend.schemas import UserResponse, AchievementResponse, AchievementUpdate
-from backend.dependencies import get_current_user, require_parent
-from backend.services.assignment_generator import auto_generate_week_assignments
-from backend.services.stats_helpers import completion_rate
-from backend.services.ranks import get_rank
-from backend.services.pet_leveling import get_pet_level
+from schemas import UserResponse, AchievementResponse, AchievementUpdate
+from dependencies import get_current_user, require_parent
+from services.assignment_generator import auto_generate_week_assignments
+from services.stats_helpers import completion_rate
+from services.ranks import get_rank
+from services.pet_leveling import get_pet_level
 
 router = APIRouter(prefix="/api/stats", tags=["stats"])
 
@@ -49,7 +49,7 @@ async def _effective_streak(db: AsyncSession, user: User) -> int:
         return user.current_streak
 
     # Gap > 1 day — check vacation days
-    from backend.routers.vacation import is_vacation_day
+    from routers.vacation import is_vacation_day
 
     gap = (today - user.last_streak_date).days
     for offset in range(1, gap):
@@ -82,7 +82,7 @@ async def get_my_stats(
     pet_type = config.get("pet")
     has_pet = pet_type not in (None, "none")
     if has_pet:
-        from backend.services.pet_leveling import get_current_pet_xp
+        from services.pet_leveling import get_current_pet_xp
         pet_xp = get_current_pet_xp(config)
         pet_info = get_pet_level(pet_xp)
         pet_info["type"] = pet_type
@@ -239,7 +239,7 @@ async def get_party(
         u_config = u.avatar_config or {}
         has_pet = u_config.get("pet") not in (None, "none")
         if has_pet:
-            from backend.services.pet_leveling import get_current_pet_xp
+            from services.pet_leveling import get_current_pet_xp
             pet_xp = get_current_pet_xp(u_config)
             pet = get_pet_level(pet_xp)
         else:

@@ -1,9 +1,9 @@
 from fastapi import Depends, HTTPException, Request
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from backend.database import get_db
-from backend.auth import decode_access_token
-from backend.models import User, UserRole
+from database import get_db
+from auth import decode_access_token
+from models import User, UserRole
 
 
 async def get_current_user(request: Request, db: AsyncSession = Depends(get_db)) -> User:

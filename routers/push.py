@@ -3,10 +3,10 @@ from pydantic import BaseModel
 from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from backend.database import get_db
-from backend.dependencies import get_current_user, require_parent
-from backend.models import PushSubscription
-from backend.services.push import get_vapid_public_key, send_push_to_user
+from database import get_db
+from dependencies import get_current_user, require_parent
+from models import PushSubscription
+from services.push import get_vapid_public_key, send_push_to_user
 
 router = APIRouter(prefix="/api/push", tags=["push"])
 

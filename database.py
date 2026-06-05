@@ -1,6 +1,6 @@
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
 from sqlalchemy.orm import DeclarativeBase
-from backend.config import settings
+from config import settings
 
 engine = create_async_engine(
     settings.DATABASE_URL,
@@ -19,7 +19,7 @@ async def init_db():
     async with engine.begin() as conn:
         # Enable WAL mode
         await conn.exec_driver_sql("PRAGMA journal_mode=WAL")
-        from backend.models import (  # noqa: F401
+        from models import (  # noqa: F401
             User, Chore, ChoreAssignment, ChoreCategory, ChoreRotation,
             ChoreExclusion, ChoreAssignmentRule, QuestTemplate,
             Reward, RewardRedemption, PointTransaction,
