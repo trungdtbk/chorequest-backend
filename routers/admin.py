@@ -62,7 +62,7 @@ async def update_user(
     if body.is_active is not None:
         user.is_active = body.is_active
 
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
     await db.commit()
     await db.refresh(user)
     return UserResponse.model_validate(user)
@@ -82,7 +82,7 @@ async def deactivate_user(
         raise HTTPException(status_code=404, detail="User not found")
 
     user.is_active = False
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
     await db.commit()
     return {"detail": "User deactivated"}
 
@@ -102,7 +102,7 @@ async def reset_user_password(
         raise HTTPException(status_code=404, detail="User not found")
 
     user.password_hash = hash_password(body.new_password)
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
     await db.commit()
     return {"detail": f"Password reset for {user.username}"}
 
@@ -325,7 +325,7 @@ async def update_settings(
         existing = result.scalar_one_or_none()
         if existing:
             existing.value = value
-            existing.updated_at = datetime.now(timezone.utc)
+            existing.updated_at = datetime.now()
         else:
             new_setting = AppSetting(key=key, value=value)
             db.add(new_setting)

@@ -84,7 +84,7 @@ async def update_rotation(
     if body.cadence is not None:
         rotation.cadence = body.cadence
 
-    rotation.updated_at = datetime.now(timezone.utc)
+    rotation.updated_at = datetime.now()
     await db.commit()
     await db.refresh(rotation)
     await ws_manager.broadcast({"type": "data_changed", "data": {"entity": "rotation"}})
@@ -133,8 +133,8 @@ async def advance_rotation(
         raise HTTPException(status_code=400, detail="Rotation has no kids to advance through")
 
     rotation.current_index = (rotation.current_index + 1) % len(rotation.kid_ids)
-    rotation.last_rotated = datetime.now(timezone.utc)
-    rotation.updated_at = datetime.now(timezone.utc)
+    rotation.last_rotated = datetime.now()
+    rotation.updated_at = datetime.now()
 
     await db.commit()
     await db.refresh(rotation)

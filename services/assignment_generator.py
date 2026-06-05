@@ -84,7 +84,7 @@ async def generate_daily_assignments(db: AsyncSession, today: date) -> None:
         logger.info("Skipping assignment generation — vacation day %s", today)
         return
 
-    now = datetime.now(timezone.utc)
+    now = datetime.now()
     chores = await _load_active_chores(db)
 
     for chore in chores:

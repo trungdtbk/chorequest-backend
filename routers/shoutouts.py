@@ -19,7 +19,7 @@ async def list_shoutouts(
     current_user: User = Depends(get_current_user),
 ):
     """Recent shoutouts (last 7 days)."""
-    cutoff = datetime.utcnow() - timedelta(days=7)
+    cutoff = datetime.now() - timedelta(days=7)
     result = await db.execute(
         select(Shoutout)
         .where(Shoutout.created_at >= cutoff)
@@ -74,7 +74,7 @@ async def create_shoutout(
         raise HTTPException(status_code=404, detail="User not found")
 
     # Rate limit: max 5 shoutouts per user per day
-    today_start = datetime.utcnow().replace(hour=0, minute=0, second=0, microsecond=0)
+    today_start = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
     count_result = await db.execute(
         select(Shoutout).where(
             Shoutout.from_user_id == current_user.id,

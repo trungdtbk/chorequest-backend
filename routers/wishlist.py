@@ -96,7 +96,7 @@ async def update_wishlist_item(
     if body.notes is not None:
         item.notes = body.notes
 
-    item.updated_at = datetime.now(timezone.utc)
+    item.updated_at = datetime.now()
     await db.commit()
     await db.refresh(item)
     await ws_manager.broadcast({"type": "data_changed", "data": {"entity": "wishlist"}}, exclude_user=user.id)

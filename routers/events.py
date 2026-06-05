@@ -20,7 +20,7 @@ def _make_aware(dt: datetime) -> datetime:
 
 def _event_to_response(event: SeasonalEvent) -> dict:
     """Build an EventResponse dict with computed is_active based on date range + DB flag."""
-    now = datetime.now(timezone.utc)
+    now = datetime.now()
     in_range = _make_aware(event.start_date) <= now <= _make_aware(event.end_date)
     data = EventResponse.model_validate(event).model_dump()
     data["is_active"] = event.is_active and in_range

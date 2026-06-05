@@ -84,7 +84,7 @@ async def approve_redemption(
 
     redemption.status = RedemptionStatus.approved
     redemption.approved_by = current_user.id
-    redemption.approved_at = datetime.now(timezone.utc)
+    redemption.approved_at = datetime.now()
 
     # Notify the kid
     notif = Notification(
@@ -157,7 +157,7 @@ async def deny_redemption(
 
     redemption.status = RedemptionStatus.denied
     redemption.approved_by = current_user.id
-    redemption.approved_at = datetime.now(timezone.utc)
+    redemption.approved_at = datetime.now()
 
     # Notify the kid
     notif = Notification(
@@ -210,7 +210,7 @@ async def fulfill_redemption(
 
     redemption.status = RedemptionStatus.fulfilled
     redemption.fulfilled_by = current_user.id
-    redemption.fulfilled_at = datetime.now(timezone.utc)
+    redemption.fulfilled_at = datetime.now()
 
     # Notify the kid
     notif = Notification(
@@ -318,7 +318,7 @@ async def update_reward(
     for field, value in update_data.items():
         setattr(reward, field, value)
 
-    reward.updated_at = datetime.now(timezone.utc)
+    reward.updated_at = datetime.now()
     await db.commit()
     await db.refresh(reward)
 
@@ -340,7 +340,7 @@ async def delete_reward(
         raise HTTPException(status_code=404, detail="Reward not found")
 
     reward.is_active = False
-    reward.updated_at = datetime.now(timezone.utc)
+    reward.updated_at = datetime.now()
     await db.commit()
 
     await ws_manager.broadcast({"type": "data_changed", "data": {"entity": "reward"}}, exclude_user=current_user.id)
@@ -396,7 +396,7 @@ async def redeem_reward(
 
     # Always auto-approve — parents fulfil from Inventory when given out
     if reward.auto_fulfill:
-        fulfilled_at = datetime.now(timezone.utc)
+        fulfilled_at = datetime.now()
     else:
         fulfilled_at = None
     redemption = RewardRedemption(
@@ -404,7 +404,7 @@ async def redeem_reward(
         user_id=current_user.id,
         points_spent=reward.point_cost,
         status=RedemptionStatus.approved,
-        approved_at=datetime.now(timezone.utc),
+        approved_at=datetime.now(),
         fulfilled_at=fulfilled_at,
     )
 

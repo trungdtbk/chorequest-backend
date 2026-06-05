@@ -383,7 +383,7 @@ async def update_chore(
 
     for field, value in update_data.items():
         setattr(chore, field, value)
-    chore.updated_at = datetime.now(timezone.utc)
+    chore.updated_at = datetime.now()
 
     newly_assigned = []
     if assigned_user_ids is not None:
@@ -429,7 +429,7 @@ async def delete_chore(
 ):
     chore = await _get_chore_or_404(db, chore_id)
     chore.is_active = False
-    chore.updated_at = datetime.now(timezone.utc)
+    chore.updated_at = datetime.now()
     await db.commit()
     await ws_manager.broadcast(_CHORE_CHANGED, exclude_user=user.id)
     return None
@@ -537,14 +537,14 @@ async def assign_chore(
             existing_rotation.kid_ids = kid_ids
             existing_rotation.cadence = body.rotation.cadence
             existing_rotation.current_index = 0
-            existing_rotation.last_rotated = datetime.now(timezone.utc)
+            existing_rotation.last_rotated = datetime.now()
         else:
             existing_rotation = ChoreRotation(
                 chore_id=chore_id,
                 kid_ids=kid_ids,
                 cadence=body.rotation.cadence,
                 current_index=0,
-                last_rotated=datetime.now(timezone.utc),
+                last_rotated=datetime.now(),
             )
             db.add(existing_rotation)
             await db.flush()
@@ -672,7 +672,7 @@ async def assign_chore(
                 existing_assignment.completed_at = None
                 existing_assignment.verified_at = None
                 existing_assignment.verified_by = None
-                existing_assignment.updated_at = datetime.now(timezone.utc)
+                existing_assignment.updated_at = datetime.now()
 
         db.add(_quest_assigned_notification(item.user_id, chore))
 
@@ -842,7 +842,7 @@ async def complete_chore(
     user: User = Depends(get_current_user),
 ):
     today = date.today()
-    now = datetime.now(timezone.utc)
+    now = datetime.now()
 
     result = await db.execute(
         select(ChoreAssignment)
@@ -952,7 +952,7 @@ async def verify_chore(
     user: User = Depends(require_parent),
 ):
     today = date.today()
-    now = datetime.now(timezone.utc)
+    now = datetime.now()
 
     result = await db.execute(
         select(ChoreAssignment)
@@ -1146,7 +1146,7 @@ async def uncomplete_chore(
     user: User = Depends(require_parent),
 ):
     today = date.today()
-    now = datetime.now(timezone.utc)
+    now = datetime.now()
 
     result = await db.execute(
         select(ChoreAssignment).where(
@@ -1230,7 +1230,7 @@ async def skip_chore(
     user: User = Depends(require_parent),
 ):
     today = date.today()
-    now = datetime.now(timezone.utc)
+    now = datetime.now()
 
     result = await db.execute(
         select(ChoreAssignment).where(

@@ -177,7 +177,7 @@ async def save_avatar(
         new_config["pet_xp"] = xp_map.get(pet, 0)
 
     user.avatar_config = new_config
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
     await db.commit()
     await db.refresh(user)
     await ws_manager.broadcast({"type": "data_changed", "data": {"entity": "user"}}, exclude_user=user.id)

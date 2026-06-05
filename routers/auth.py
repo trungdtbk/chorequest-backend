@@ -116,7 +116,7 @@ async def register(
         invite = result.scalar_one_or_none()
         if invite is None:
             raise HTTPException(status_code=400, detail="Invalid invite code")
-        if invite.expires_at and invite.expires_at < datetime.now(timezone.utc):
+        if invite.expires_at and invite.expires_at < datetime.now():
             raise HTTPException(status_code=400, detail="Invite code has expired")
         if invite.times_used >= invite.max_uses:
             raise HTTPException(status_code=400, detail="Invite code has been fully used")
@@ -323,7 +323,7 @@ async def update_me(
     if body.avatar_config is not None:
         user.avatar_config = body.avatar_config
 
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
     await db.commit()
     await db.refresh(user)
     await ws_manager.broadcast({"type": "data_changed", "data": {"entity": "user"}}, exclude_user=user.id)
@@ -342,7 +342,7 @@ async def change_password(
         raise HTTPException(status_code=400, detail="Current password is incorrect")
 
     user.password_hash = hash_password(body.new_password)
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
 
     # Invalidate all refresh tokens
     result = await db.execute(
@@ -375,6 +375,6 @@ async def set_pin(
     user: User = Depends(get_current_user),
 ):
     user.pin_hash = hash_pin(body.pin)
-    user.updated_at = datetime.now(timezone.utc)
+    user.updated_at = datetime.now()
     await db.commit()
     return {"detail": "PIN set successfully"}

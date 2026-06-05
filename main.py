@@ -82,7 +82,7 @@ async def daily_reset_task():
     - Clean up expired refresh tokens
     """
     while True:
-        now = datetime.now(timezone.utc)
+        now = datetime.now()
         target_hour = settings.DAILY_RESET_HOUR
         next_run = now.replace(hour=target_hour, minute=0, second=0, microsecond=0)
         if now >= next_run:
@@ -102,7 +102,7 @@ async def daily_reset_task():
                 # Clean up expired refresh tokens
                 await db.execute(
                     delete(RefreshToken).where(
-                        RefreshToken.expires_at < datetime.now(timezone.utc)
+                        RefreshToken.expires_at < datetime.now()
                     )
                 )
 
